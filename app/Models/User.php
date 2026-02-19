@@ -49,13 +49,13 @@ class User extends Authenticatable
         ];
     }
 
-    public function Restaurant()
+    public function restaurant()
     {
-        $this->hasOne(Restaurant::class);
+        return $this->hasOne(Restaurant::class);
     }
 
-    public function Reservation()
+    public function reservations()
     {
-        $this->belongsTo(Reservation::class);   
+        return $this->belongsTo(Reservation::class);   
     }
 }
