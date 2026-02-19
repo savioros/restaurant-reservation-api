@@ -16,7 +16,12 @@ class Table extends Model
         'active',
     ];
 
-    public function Reservation()
+    public function restaurant()
+    {
+        return $this->belongsTo(Restaurant::class);
+    }
+
+    public function reservations()
     {
         $this->hasMany(Reservation::class);
     }
