@@ -2,19 +2,27 @@
 
 namespace App\Services;
 
+use App\Exceptions\CreateUserException;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class RegisterUserService
 {
     public function create(array $data): User
     {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-            'phone' => $data['phone'],
-            'role' => $data['role']
-        ]);
+        try {
+            return DB::transaction(function () use ($data) {
+                return User::create([
+                    'name' => $data['name'],
+                    'email' => $data['email'],
+                    'password' => Hash::make($data['password']),
+                    'phone' => $data['phone'],
+                    'role' => $data['role']
+                ]);
+            });
+        } catch (CreateUserException $e) {
+            throw new CreateUserException("Error Processing Request");
+        }
     }
 }
