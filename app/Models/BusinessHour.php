@@ -14,4 +14,9 @@ class BusinessHour extends Model
         'interval_minutes',
         'is_closed',
     ];
+
+    public function restaurant()
+    {
+        return $this->belongsTo(Restaurant::class);
+    }
 }

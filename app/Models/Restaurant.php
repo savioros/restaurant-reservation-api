@@ -24,13 +24,23 @@ class Restaurant extends Model
         'active',
     ];
 
-    public function Table()
+    public function user()
     {
-        $this->hasMany(Table::class);
+        return $this->belongsTo(User::class);
     }
 
-    public function BusinessHour()
+    public function tables()
     {
-        $this->hasMany(BusinessHour::class);
+        return $this->hasMany(Table::class);
+    }
+
+    public function businessHours()
+    {
+        return $this->hasMany(BusinessHour::class);
+    }
+
+    public function reservations()
+    {
+        return $this->hasMany(Reservation::class);
     }
 }
