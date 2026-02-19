@@ -21,7 +21,7 @@ class UserController extends Controller
         } catch (CreateUserException $e) {
             return response()->json([
                 'message' => $e->getMessage()
-            ], 500);
+            ]);
         }
     }
 
@@ -36,7 +36,7 @@ class UserController extends Controller
             ]);
         } catch (Exception $e) {
             return response()->json([
-                'error' => $e->getMessage()
+                'message' => $e->getMessage()
             ]);
         }
     }
