@@ -20,4 +20,19 @@ class Reservation extends Model
         'cancelled_at',
         'completed_at',
     ];
+
+    public function restaurant()
+    {
+        return $this->belongsTo(Restaurant::class);
+    }
+
+    public function table()
+    {
+        return $this->belongsTo(Table::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
