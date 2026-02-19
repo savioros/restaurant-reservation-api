@@ -48,4 +48,14 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function Restaurant()
+    {
+        $this->hasOne(Restaurant::class);
+    }
+
+    public function Reservation()
+    {
+        $this->belongsTo(Reservation::class);   
+    }
 }
