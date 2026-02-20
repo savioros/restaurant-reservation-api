@@ -24,7 +24,7 @@ class TableRegisterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'number' => 'required|int|min:1|unique:tables,number',
+            'number' => 'required|int|min:1',
             'capacity' => 'required|int|min:1',
             'location' => ['required', new Enum(TableLocation::class)]
         ];
