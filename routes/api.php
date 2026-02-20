@@ -10,4 +10,4 @@ Route::get('/', function () {
 
 Route::post('/auth/register', [UserController::class, 'store']);
 Route::post('/auth/login', [UserController::class, 'login']);
-Route::post('/restaurants', [RestaurantController::class, 'store']);
+Route::post('/restaurant', [RestaurantController::class, 'store']);

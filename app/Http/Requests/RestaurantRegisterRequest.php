@@ -11,7 +11,7 @@ class RestaurantRegisterRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,14 @@ class RestaurantRegisterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|string|min:3',
+            'description' => 'nullable|string',
+            'phone' => 'nullable|regex:/^\+?[0-9]{10,15}$/',
+            'email' => 'required|email',
+            'address' => 'required|string|min:10',
+            'city' => 'required|string|min:3',
+            'state' => 'required|string|min:2|max:3',
+            'zip_code' => 'required|string|regex:/^\d{5}-\d{3}$/'
         ];
     }
 }
