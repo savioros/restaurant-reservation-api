@@ -16,7 +16,7 @@ class RegisterRestaurantService
                 return Restaurant::create([
                     'user_id' => auth()->user()->id,
                     'name' => $data['name'],
-                    'slug' => $data['name'],
+                    'slug' => $data['slug'],
                     'description' => $data['description'],
                     'phone' => $data['phone'],
                     'email' => $data['email'],
