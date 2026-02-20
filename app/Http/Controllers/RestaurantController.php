@@ -6,10 +6,16 @@ use App\Exceptions\CreateRestaurantException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RestaurantRegisterRequest;
 use App\Http\Resources\RestaurantResource;
+use App\Models\Restaurant;
 use App\Services\RegisterRestaurantService;
 
 class RestaurantController extends Controller
 {
+    public function index()
+    {
+        return RestaurantResource::collection(Restaurant::all());    
+    }
+
     public function store(RestaurantRegisterRequest $request, RegisterRestaurantService $service)
     {
         try {
