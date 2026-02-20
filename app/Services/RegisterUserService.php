@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Exceptions\CreateUserException;
 use App\Models\User;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
@@ -21,8 +22,12 @@ class RegisterUserService
                     'role' => $data['role']
                 ]);
             });
-        } catch (CreateUserException $e) {
-            throw new CreateUserException("Error Processing Request");
+        } catch (QueryException $e) {
+            throw new CreateUserException(
+                "Error creating user",
+                0,
+                $e
+            );
         }
     }
 }
