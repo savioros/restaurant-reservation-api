@@ -9,6 +9,7 @@ use App\Http\Requests\RestaurantRegisterRequest;
 use App\Http\Resources\RestaurantResource;
 use App\Models\Restaurant;
 use App\Services\RegisterRestaurantService;
+use Exception;
 
 class RestaurantController extends Controller
 {
@@ -27,5 +28,10 @@ class RestaurantController extends Controller
                 'message' => $e->getMessage()
             ]);
         }
+    }
+
+    public function show(Restaurant $restaurant)
+    {
+        return new RestaurantResource($restaurant);
     }
 }
