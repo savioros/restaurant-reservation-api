@@ -3,18 +3,25 @@
 namespace App\Services;
 
 use App\Exceptions\CreateRestaurantException;
+use App\Exceptions\UserAlreadyHasARestaurant;
 use App\Models\Restaurant;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 
 class RegisterRestaurantService
 {
-    public function create(array $data): Restaurant
+    public function create(int $userId, array $data): Restaurant
     {
         try {
-            return DB::transaction(function () use ($data) {
+            $userHasRestaurant = Restaurant::where('user_id', $userId)->exists();
+
+            if ($userHasRestaurant) {
+                throw new UserAlreadyHasARestaurant('User already has a restaurant');
+            }
+
+            return DB::transaction(function () use ($userId, $data) {
                 return Restaurant::create([
-                    'user_id' => auth()->user()->id,
+                    'user_id' => $userId,
                     'name' => $data['name'],
                     'slug' => $data['slug'],
                     'description' => $data['description'],

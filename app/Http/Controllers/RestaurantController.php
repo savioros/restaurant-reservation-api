@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\CreateRestaurantException;
+use App\Exceptions\UserAlreadyHasARestaurant;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RestaurantRegisterRequest;
 use App\Http\Resources\RestaurantResource;
@@ -19,9 +20,9 @@ class RestaurantController extends Controller
     public function store(RestaurantRegisterRequest $request, RegisterRestaurantService $service)
     {
         try {
-            $restaurant = $service->create($request->validated());
+            $restaurant = $service->create(auth()->id(), $request->validated());
             return new RestaurantResource($restaurant);
-        } catch (CreateRestaurantException $e) {
+        } catch (CreateRestaurantException|UserAlreadyHasARestaurant $e) {
             return response()->json([
                 'message' => $e->getMessage()
             ]);
