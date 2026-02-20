@@ -7,10 +7,17 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\TableRegisterRequest;
 use App\Http\Resources\TableResource;
 use App\Models\Restaurant;
+use App\Models\Table;
 use App\Services\RegisterTableService;
 
 class TableController extends Controller
 {
+    public function index(Restaurant $restaurant)
+    {
+        $tables = Table::where('restaurant_id', $restaurant->id)->get();
+        return TableResource::collection($tables);
+    }
+
     public function store(TableRegisterRequest $request, Restaurant $restaurant, RegisterTableService $service)
     {
         try {
