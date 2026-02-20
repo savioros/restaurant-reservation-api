@@ -23,6 +23,7 @@ class RestaurantRegisterRequest extends FormRequest
     {
         return [
             'name' => 'required|string|min:3',
+            'slug' => 'required|string|min:3',
             'description' => 'nullable|string',
             'phone' => 'nullable|regex:/^\+?[0-9]{10,15}$/',
             'email' => 'required|email',

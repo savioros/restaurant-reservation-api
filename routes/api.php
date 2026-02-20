@@ -10,4 +10,7 @@ Route::get('/', function () {
 
 Route::post('/auth/register', [UserController::class, 'store']);
 Route::post('/auth/login', [UserController::class, 'login']);
-Route::post('/restaurant', [RestaurantController::class, 'store']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/restaurant', [RestaurantController::class, 'store']);
+});
