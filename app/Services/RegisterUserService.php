@@ -13,15 +13,13 @@ class RegisterUserService
     public function create(array $data): User
     {
         try {
-            return DB::transaction(function () use ($data) {
-                return User::create([
-                    'name' => $data['name'],
-                    'email' => $data['email'],
-                    'password' => Hash::make($data['password']),
-                    'phone' => $data['phone'],
-                    'role' => $data['role']
-                ]);
-            });
+            return User::create([
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'password' => Hash::make($data['password']),
+                'phone' => $data['phone'],
+                'role' => $data['role']
+            ]);
         } catch (QueryException $e) {
             throw new CreateUserException(
                 "Error creating user",
