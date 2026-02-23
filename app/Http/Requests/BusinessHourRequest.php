@@ -11,7 +11,7 @@ class BusinessHourRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,10 @@ class BusinessHourRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'day_of_week' => 'required|int|min:1|max:7',
+            'open_time' => 'required|date_format:H:i',
+            'close_time' => 'required|date_format:H:i|after:open_time',
+            'interval_minutes' => 'required|int'
         ];
     }
 }
