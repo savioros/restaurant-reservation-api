@@ -20,3 +20,4 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/restaurants', [RestaurantController::class, 'index']);
     Route::get('/restaurants/{restaurant}', [RestaurantController::class, 'show']);
     Route::get('/restaurants/{restaurant}/tables', [TableController::class, 'index']);
+    Route::get('/restaurants/{restaurant}/business-hours', [TableController::class, 'store']);
