@@ -14,6 +14,11 @@ class BusinessHourResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'day_of_week' => $this->day_of_week,
+            'open_time' => $this->open_time,
+            'close_time' => $this->close_time,
+        ];
     }
 }
