@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BusinessHourController;
+use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\RestaurantController;
 use App\Http\Controllers\TableController;
 use App\Http\Controllers\UserController;
@@ -17,6 +18,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/restaurants', [RestaurantController::class, 'store']);
     Route::post('/restaurants/{restaurant}/tables', [TableController::class, 'store']);
     Route::post('/restaurants/{restaurant}/business-hours', [BusinessHourController::class, 'store']);
+    Route::post('/restaurants/{restaurant}/reservations', [ReservationController::class, 'store']);
 });
 
 Route::get('/restaurants', [RestaurantController::class, 'index']);
