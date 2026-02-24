@@ -2,27 +2,30 @@
 
 namespace App\Services;
 
-use App\Exceptions\CreateTableException;
-use App\Exceptions\UserAreProhibitedCreateOrModifyingThirdpartyRestaurant;
+use App\Exceptions\CreateReservationException;
+use App\Models\BusinessHour;
+use App\Models\Reservation;
 use App\Models\Restaurant;
-use App\Models\Table;
 use Illuminate\Database\QueryException;
 
 class RegisterReservationService
 {
-    public function create(int $userId, Restaurant $restaurant, array $data): Table
+    public function create(Restaurant $restaurant, array $data): Reservation
     {
-        if ($userId != $restaurant->user_id) throw new UserAreProhibitedCreateOrModifyingThirdpartyRestaurant('You do not have permission to create or modify this restaurant\'s information');
-
         try {
-            return Table::create([
+            return Reservation::create([
                 'restaurant_id' => $restaurant->id,
-                'number' => $data['number'],
-                'capacity' => $data['capacity'],
-                'location' => $data['location']
+                'table_id' => $data['table_id'],
+                'reservation_date' => $data['reservation_date'],
+                'start_time' => $data['start_time'],
+                'end_time' => $data['start_time'],
+                'guests_count' => $data['guests_count'],
+                'customer_name' => $data['customer_name'],
+                'customer_email' => $data['customer_email'],
+                'customer_phone' => $data['customer_phone']
             ]);
         } catch (QueryException $e) {
-            throw new CreateTableException(
+            throw new CreateReservationException(
                 'Error creating table',
                 0,
                 $e

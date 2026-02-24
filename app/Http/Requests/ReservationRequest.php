@@ -11,7 +11,7 @@ class ReservationRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,14 @@ class ReservationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'restaurant_id' => 'required|int|min:1',
+            'table_id' => 'required|int|min:1',
+            'reservation_date' => 'required|date_format:Y-m-d',
+            'start_time' => 'required|date_format:H:i',
+            'guests_count' => 'required|int|min:1',
+            'customer_name' => 'required|string|min:3',
+            'customer_email' => 'required|email',
+            'customer_phone' => 'required|regex:/^\+?[0-9]{10,15}$/',
         ];
     }
 }

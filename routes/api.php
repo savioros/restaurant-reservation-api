@@ -18,9 +18,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/restaurants', [RestaurantController::class, 'store']);
     Route::post('/restaurants/{restaurant}/tables', [TableController::class, 'store']);
     Route::post('/restaurants/{restaurant}/business-hours', [BusinessHourController::class, 'store']);
-    Route::post('/restaurants/{restaurant}/reservations', [ReservationController::class, 'store']);
 });
 
 Route::get('/restaurants', [RestaurantController::class, 'index']);
 Route::get('/restaurants/{restaurant}', [RestaurantController::class, 'show']);
 Route::get('/restaurants/{restaurant}/tables', [TableController::class, 'index']);
+Route::post('/restaurants/{restaurant}/reservations', [ReservationController::class, 'store']);
