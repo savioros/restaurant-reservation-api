@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\LoginAction;
+use App\Actions\RegisterAction;
 use App\Exceptions\CreateUserException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
-use App\Http\Requests\RegisterRequest;
+use App\Http\Requests\StoreUserRequest;
 use App\Http\Resources\UserResource;
-use App\Services\LoginUserService;
-use App\Services\RegisterUserService;
 use Exception;
 
 class UserController extends Controller
 {
-    public function store(RegisterRequest $request, RegisterUserService $service)
+    public function store(StoreUserRequest $request, RegisterAction $registerAction)
     {
         try {
-            $user = $service->create($request->validated());
+            $user = $registerAction->handle($request->validated());
             return new UserResource($user);
         } catch (CreateUserException $e) {
             return response()->json([
@@ -25,10 +25,10 @@ class UserController extends Controller
         }
     }
 
-    public function login(LoginRequest $request, LoginUserService $service)
+    public function login(LoginRequest $request, LoginAction $loginAction)
     {
         try{
-            $token = $service->login($request->validated());
+            $token = $loginAction->handle($request->validated());
     
             return response()->json([
                 'token' => $token,

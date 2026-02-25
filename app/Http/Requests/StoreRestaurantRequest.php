@@ -2,11 +2,9 @@
 
 namespace App\Http\Requests;
 
-use App\Enums\UserRole;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules\Enum;
 
-class RegisterRequest extends FormRequest
+class StoreRestaurantRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,11 +22,15 @@ class RegisterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:6',
+            'name' => 'required|string|min:3',
+            'slug' => 'required|string|min:3',
+            'description' => 'nullable|string',
             'phone' => 'nullable|regex:/^\+?[0-9]{10,15}$/',
-            'role' => ['required', new Enum(UserRole::class)]
+            'email' => 'required|email',
+            'address' => 'required|string|min:10',
+            'city' => 'required|string|min:3',
+            'state' => 'required|string|min:2|max:3',
+            'zip_code' => 'required|string|regex:/^\d{5}-\d{3}$/'
         ];
     }
 }

@@ -2,11 +2,9 @@
 
 namespace App\Http\Requests;
 
-use App\Enums\TableLocation;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules\Enum;
 
-class TableRegisterRequest extends FormRequest
+class StoreBusinessHourRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +22,10 @@ class TableRegisterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'number' => 'required|int|min:1',
-            'capacity' => 'required|int|min:1',
-            'location' => ['required', new Enum(TableLocation::class)]
+            'day_of_week' => 'required|int|min:0|max:6',
+            'open_time' => 'required|date_format:H:i',
+            'close_time' => 'required|date_format:H:i|after:open_time',
+            'interval_minutes' => 'required|int'
         ];
     }
 }
