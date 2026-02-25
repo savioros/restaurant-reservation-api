@@ -8,9 +8,11 @@ use App\Exceptions\RestaurantClosedException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ReservationRequest;
 use App\Http\Resources\ReservationResource;
+use App\Models\Reservation;
 use App\Models\Restaurant;
 use App\Services\RegisterReservationService;
 use Exception;
+use Illuminate\Http\Request;
 
 class ReservationController extends Controller
 {
@@ -28,5 +30,13 @@ class ReservationController extends Controller
                 'message' => $e->getMessage()
             ], 422);
         }
+    }
+
+    public function show(Restaurant $restaurant, Reservation $reservation)
+    {
+        $reservation = $restaurant->reservations()
+            ->findOrFail($reservation->id);
+
+        return new ReservationResource($reservation);
     }
 }
