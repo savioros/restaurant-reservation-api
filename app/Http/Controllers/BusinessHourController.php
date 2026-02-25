@@ -5,17 +5,17 @@ namespace App\Http\Controllers;
 use App\Exceptions\CreateBusinessHourException;
 use App\Exceptions\UserAreProhibitedCreateOrModifyingThirdpartyRestaurant;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\BusinessHourRequest;
+use App\Http\Requests\StoreBusinessHourRequest;
 use App\Http\Resources\BusinessHourResource;
 use App\Models\Restaurant;
-use App\Services\RegisterBusinessHourService;
+use App\Services\BusinessHourService;
 
 class BusinessHourController extends Controller
 {
-    public function store(BusinessHourRequest $request, Restaurant $restaurant, RegisterBusinessHourService $service)
+    public function store(StoreBusinessHourRequest $request, Restaurant $restaurant, BusinessHourService $businessHourService)
     {
         try {
-            $businessHour = $service->create(auth()->id(), $restaurant, $request->validated());
+            $businessHour = $businessHourService->create(auth()->id(), $restaurant, $request->validated());
             return new BusinessHourResource($businessHour);
         } catch (CreateBusinessHourException $e) {
             return response()->json([

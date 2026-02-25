@@ -1,16 +1,15 @@
 <?php
 
-namespace App\Services;
+namespace App\Actions;
 
 use App\Exceptions\CreateUserException;
 use App\Models\User;
 use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
-class RegisterUserService
+class RegisterAction
 {
-    public function create(array $data): User
+    public function handle(array $data): User
     {
         try {
             return User::create([

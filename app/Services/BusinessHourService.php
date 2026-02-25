@@ -8,7 +8,7 @@ use App\Models\BusinessHour;
 use App\Models\Restaurant;
 use Illuminate\Database\QueryException;
 
-class RegisterBusinessHourService
+class BusinessHourService
 {
     public function create(int $userId, Restaurant $restaurant, array $data): BusinessHour
     {

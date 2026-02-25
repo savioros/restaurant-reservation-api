@@ -8,7 +8,7 @@ use App\Models\Restaurant;
 use App\Models\Table;
 use Illuminate\Database\QueryException;
 
-class RegisterTableService
+class TableService
 {
     public function create(int $userId, Restaurant $restaurant, array $data): Table
     {

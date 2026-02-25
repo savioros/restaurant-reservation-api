@@ -6,9 +6,8 @@ use App\Exceptions\CreateRestaurantException;
 use App\Exceptions\UserAlreadyHasARestaurant;
 use App\Models\Restaurant;
 use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\DB;
 
-class RegisterRestaurantService
+class RestaurantService
 {
     public function create(int $userId, array $data): Restaurant
     {
