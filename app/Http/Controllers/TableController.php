@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Exceptions\CreateTableException;
 use App\Exceptions\UserAreProhibitedCreateOrModifyingThirdpartyRestaurant;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\TableRegisterRequest;
+use App\Http\Requests\StoreTableRequest;
 use App\Http\Resources\TableResource;
 use App\Models\Restaurant;
 use App\Models\Table;
@@ -19,7 +19,7 @@ class TableController extends Controller
         return TableResource::collection($tables);
     }
 
-    public function store(TableRegisterRequest $request, Restaurant $restaurant, TableService $tableService)
+    public function store(StoreTableRequest $request, Restaurant $restaurant, TableService $tableService)
     {
         try {
             $table = $tableService->create(auth()->id(), $restaurant, $request->validated());

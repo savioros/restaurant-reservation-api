@@ -7,13 +7,13 @@ use App\Actions\RegisterAction;
 use App\Exceptions\CreateUserException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
-use App\Http\Requests\RegisterRequest;
+use App\Http\Requests\StoreUserRequest;
 use App\Http\Resources\UserResource;
 use Exception;
 
 class UserController extends Controller
 {
-    public function store(RegisterRequest $request, RegisterAction $registerAction)
+    public function store(StoreUserRequest $request, RegisterAction $registerAction)
     {
         try {
             $user = $registerAction->handle($request->validated());

@@ -6,7 +6,7 @@ use App\Exceptions\CreateReservationException;
 use App\Exceptions\ReservationConflictException;
 use App\Exceptions\RestaurantClosedException;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ReservationRequest;
+use App\Http\Requests\StoreReservationRequest;
 use App\Http\Resources\ReservationResource;
 use App\Models\Reservation;
 use App\Models\Restaurant;
@@ -15,7 +15,7 @@ use Exception;
 
 class ReservationController extends Controller
 {
-    public function store(ReservationRequest $request, Restaurant $restaurant, ReservationService $reservationService)
+    public function store(StoreReservationRequest $request, Restaurant $restaurant, ReservationService $reservationService)
     {
         try {
             $reservation = $reservationService->create($restaurant, $request->validated());
