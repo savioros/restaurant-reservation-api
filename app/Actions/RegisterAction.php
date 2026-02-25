@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Hash;
 
 class RegisterAction
 {
-    public function create(array $data): User
+    public function handle(array $data): User
     {
         try {
             return User::create([
