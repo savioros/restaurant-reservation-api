@@ -9,7 +9,7 @@ use App\Http\Requests\TableRegisterRequest;
 use App\Http\Resources\TableResource;
 use App\Models\Restaurant;
 use App\Models\Table;
-use App\Services\RegisterTableService;
+use App\Services\TableService;
 
 class TableController extends Controller
 {
@@ -19,7 +19,7 @@ class TableController extends Controller
         return TableResource::collection($tables);
     }
 
-    public function store(TableRegisterRequest $request, Restaurant $restaurant, RegisterTableService $service)
+    public function store(TableRegisterRequest $request, Restaurant $restaurant, TableService $service)
     {
         try {
             $table = $service->create(auth()->id(), $restaurant, $request->validated());
