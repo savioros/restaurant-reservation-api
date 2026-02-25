@@ -13,10 +13,10 @@ use Exception;
 
 class UserController extends Controller
 {
-    public function store(RegisterRequest $request, RegisterAction $service)
+    public function store(RegisterRequest $request, RegisterAction $registerAction)
     {
         try {
-            $user = $service->create($request->validated());
+            $user = $registerAction->handle($request->validated());
             return new UserResource($user);
         } catch (CreateUserException $e) {
             return response()->json([
@@ -25,10 +25,10 @@ class UserController extends Controller
         }
     }
 
-    public function login(LoginRequest $request, LoginAction $service)
+    public function login(LoginRequest $request, LoginAction $loginAction)
     {
         try{
-            $token = $service->login($request->validated());
+            $token = $loginAction->handle($request->validated());
     
             return response()->json([
                 'token' => $token,
