@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\ReservationStatus;
 use Illuminate\Database\Eloquent\Model;
 
 class Reservation extends Model
@@ -19,6 +20,10 @@ class Reservation extends Model
         'confirmed_at',
         'cancelled_at',
         'completed_at',
+    ];
+
+    protected $casts = [
+        'status' => ReservationStatus::class,
     ];
 
     public function restaurant()

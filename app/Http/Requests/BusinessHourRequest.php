@@ -22,7 +22,7 @@ class BusinessHourRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'day_of_week' => 'required|int|min:1|max:7',
+            'day_of_week' => 'required|int|min:0|max:6',
             'open_time' => 'required|date_format:H:i',
             'close_time' => 'required|date_format:H:i|after:open_time',
             'interval_minutes' => 'required|int'
