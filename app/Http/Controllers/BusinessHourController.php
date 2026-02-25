@@ -8,11 +8,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\BusinessHourRequest;
 use App\Http\Resources\BusinessHourResource;
 use App\Models\Restaurant;
-use App\Services\RegisterBusinessHourService;
+use App\Services\BusinessHourService;
 
 class BusinessHourController extends Controller
 {
-    public function store(BusinessHourRequest $request, Restaurant $restaurant, RegisterBusinessHourService $service)
+    public function store(BusinessHourRequest $request, Restaurant $restaurant, BusinessHourService $service)
     {
         try {
             $businessHour = $service->create(auth()->id(), $restaurant, $request->validated());
