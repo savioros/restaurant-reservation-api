@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\LoginAction;
+use App\Actions\RegisterAction;
 use App\Exceptions\CreateUserException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Resources\UserResource;
-use App\Services\LoginUserService;
-use App\Services\RegisterUserService;
 use Exception;
 
 class UserController extends Controller
 {
-    public function store(RegisterRequest $request, RegisterUserService $service)
+    public function store(RegisterRequest $request, RegisterAction $service)
     {
         try {
             $user = $service->create($request->validated());
@@ -25,7 +25,7 @@ class UserController extends Controller
         }
     }
 
-    public function login(LoginRequest $request, LoginUserService $service)
+    public function login(LoginRequest $request, LoginAction $service)
     {
         try{
             $token = $service->login($request->validated());

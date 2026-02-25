@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Services;
+namespace App\Actions;
 
 use App\Models\User;
 use Exception;
 use Illuminate\Support\Facades\Hash;
 
-class LoginUserService
+class LoginAction
 {
     public function login(array $data): string
     {
