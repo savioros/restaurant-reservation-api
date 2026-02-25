@@ -17,10 +17,10 @@ class RestaurantController extends Controller
         return RestaurantResource::collection(Restaurant::all());    
     }
 
-    public function store(RestaurantRegisterRequest $request, RestaurantService $service)
+    public function store(RestaurantRegisterRequest $request, RestaurantService $restaurantService)
     {
         try {
-            $restaurant = $service->create(auth()->id(), $request->validated());
+            $restaurant = $restaurantService->create(auth()->id(), $request->validated());
             return new RestaurantResource($restaurant);
         } catch (CreateRestaurantException|UserAlreadyHasARestaurant $e) {
             return response()->json([

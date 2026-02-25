@@ -19,10 +19,10 @@ class TableController extends Controller
         return TableResource::collection($tables);
     }
 
-    public function store(TableRegisterRequest $request, Restaurant $restaurant, TableService $service)
+    public function store(TableRegisterRequest $request, Restaurant $restaurant, TableService $tableService)
     {
         try {
-            $table = $service->create(auth()->id(), $restaurant, $request->validated());
+            $table = $tableService->create(auth()->id(), $restaurant, $request->validated());
             return new TableResource($table);
         } catch (CreateTableException $e) {
             return response()->json([

@@ -12,10 +12,10 @@ use App\Services\BusinessHourService;
 
 class BusinessHourController extends Controller
 {
-    public function store(BusinessHourRequest $request, Restaurant $restaurant, BusinessHourService $service)
+    public function store(BusinessHourRequest $request, Restaurant $restaurant, BusinessHourService $businessHourService)
     {
         try {
-            $businessHour = $service->create(auth()->id(), $restaurant, $request->validated());
+            $businessHour = $businessHourService->create(auth()->id(), $restaurant, $request->validated());
             return new BusinessHourResource($businessHour);
         } catch (CreateBusinessHourException $e) {
             return response()->json([

@@ -15,10 +15,10 @@ use Exception;
 
 class ReservationController extends Controller
 {
-    public function store(ReservationRequest $request, Restaurant $restaurant, ReservationService $service)
+    public function store(ReservationRequest $request, Restaurant $restaurant, ReservationService $reservationService)
     {
         try {
-            $reservation = $service->create($restaurant, $request->validated());
+            $reservation = $reservationService->create($restaurant, $request->validated());
             return new ReservationResource($reservation);
         } catch (CreateReservationException $e) {
             return response()->json([
