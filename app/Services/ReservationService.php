@@ -12,7 +12,7 @@ use Illuminate\Database\QueryException;
 use Carbon\Carbon;
 use Exception;
 
-class RegisterReservationService
+class ReservationService
 {
     public function create(Restaurant $restaurant, array $data): Reservation
     {

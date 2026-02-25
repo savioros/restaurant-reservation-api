@@ -10,13 +10,12 @@ use App\Http\Requests\ReservationRequest;
 use App\Http\Resources\ReservationResource;
 use App\Models\Reservation;
 use App\Models\Restaurant;
-use App\Services\RegisterReservationService;
+use App\Services\ReservationService;
 use Exception;
-use Illuminate\Http\Request;
 
 class ReservationController extends Controller
 {
-    public function store(ReservationRequest $request, Restaurant $restaurant, RegisterReservationService $service)
+    public function store(ReservationRequest $request, Restaurant $restaurant, ReservationService $service)
     {
         try {
             $reservation = $service->create($restaurant, $request->validated());
