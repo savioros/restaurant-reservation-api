@@ -9,7 +9,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class ReservationCreateMail extends Mailable
+class ReservationConfirmationMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -35,7 +35,7 @@ class ReservationCreateMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Reservation Create Mail',
+            subject: 'Reservation Confirmation Mail',
         );
     }
 
@@ -45,7 +45,7 @@ class ReservationCreateMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mail.create-reservation',
+            view: 'mail.confirm-reservation',
         );
     }
 

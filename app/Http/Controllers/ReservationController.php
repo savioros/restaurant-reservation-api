@@ -10,7 +10,7 @@ use App\Exceptions\RestaurantClosedException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreReservationRequest;
 use App\Http\Resources\ReservationResource;
-use App\Mail\ReservationCreateMail;
+use App\Mail\ReservationConfirmationMail;
 use App\Models\Reservation;
 use App\Models\Restaurant;
 use App\Services\ReservationService;
@@ -23,20 +23,6 @@ class ReservationController extends Controller
     {
         try {
             $reservation = $reservationService->create($restaurant, $request->validated());
-
-            $mail = new ReservationCreateMail(
-                $request->customer_name,
-                $reservation->reservation_date,
-                $reservation->start_time,
-                $reservation->end_time,
-                $restaurant->name,
-                1,
-                $reservation->guests_count,
-                '/',
-                '/'
-            );
-
-            Mail::to($request->customer_email)->send($mail);
 
             return new ReservationResource($reservation);
         } catch (CreateReservationException $e) {
@@ -61,7 +47,21 @@ class ReservationController extends Controller
     public function confirm(string $token, ReservationService $reservationService)
     {
         try {
-            $reservationService->confirmByToken($token);
+            $reservation = $reservationService->confirmByToken($token);
+
+            $mail = new ReservationConfirmationMail(
+                $reservation->customer_name,
+                $reservation->reservation_date,
+                $reservation->start_time,
+                $reservation->end_time,
+                $reservation->restaurant()->first()->name,
+                $reservation->table()->first()->number,
+                $reservation->guests_count,
+                '/',
+                '/'
+            );
+
+            Mail::to($reservation->customer_email)->send($mail);
 
             return response()->json([
                 'message' => 'Reservation confirmed'

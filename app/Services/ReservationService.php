@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Exceptions\CreateReservationException;
 use App\Exceptions\ExpiredTokenException;
 use App\Exceptions\InvalidTokenException;
-use App\Exceptions\ReservationConfirmationException;
 use App\Exceptions\ReservationConflictException;
 use App\Exceptions\RestaurantClosedException;
 use App\Models\BusinessHour;
@@ -65,7 +64,10 @@ class ReservationService
                 'guests_count' => $data['guests_count'],
                 'status' => 'pending',
                 'confirmation_token' => Str::random(32),
-                'confirmation_expires_at' => now()->addMinutes(30)
+                'confirmation_expires_at' => now()->addMinutes(30),
+                'customer_name' => $data['customer_name'],
+                'customer_email' => $data['customer_email'],
+                'customer_phone' => $data['customer_phone'],
             ]);
         } catch (QueryException $e) {
             throw new CreateReservationException(
@@ -76,7 +78,7 @@ class ReservationService
         }
     }
 
-    public function confirmByToken(string $token): void
+    public function confirmByToken(string $token): Reservation
     {
         $reservation = Reservation::where('confirmation_token', $token)
             ->where('status', 'pending')
@@ -95,5 +97,10 @@ class ReservationService
             'status' => 'confirmed',
             'confirmed_at' => now(),
         ]);
+
+        return $reservation->load([
+            'restaurant',
+            'table'
+        ])->first();
     }
 }

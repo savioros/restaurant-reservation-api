@@ -22,6 +22,9 @@ class Reservation extends Model
         'completed_at',
         'confirmation_token',
         'confirmation_expires_at',
+        'customer_name',
+        'customer_email',
+        'customer_phone',
     ];
 
     protected $casts = [

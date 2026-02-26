@@ -23,7 +23,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('reservations', function (Blueprint $table) {
+            $table->dropUnique(['confirmation_token']);
             $table->dropColumn('confirmation_token');
+
             $table->dropColumn('confirmation_expires_at');
         });
     }

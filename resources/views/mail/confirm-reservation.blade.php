@@ -15,7 +15,7 @@
                 <tr>
                     <td style="background-color: #4F46E5; padding: 30px; text-align: center;">
                         <h1 style="color: #ffffff; margin: 0; font-size: 28px;">
-                            🍽️ Reserva Criada!
+                            🍽️ Reserva Confirmada!
                         </h1>
                     </td>
                 </tr>
@@ -28,7 +28,7 @@
                         </p>
 
                         <p style="font-size: 16px; color: #333333; margin: 0 0 30px 0;">
-                            Sua reserva foi criada com sucesso!
+                            Sua reserva foi confirmada com sucesso!
                         </p>
 
                         <!-- Info Box -->
@@ -50,43 +50,6 @@
                                     <p style="margin: 0; font-size: 14px; color: #6b7280;">
                                         <strong style="color: #111827;">👥 Pessoas:</strong> {{ $guests }}
                                     </p>
-                                </td>
-                            </tr>
-                        </table>
-
-                        <!-- Warning Box -->
-                        <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #fef3c7; border-left: 4px solid #f59e0b; border-radius: 4px; margin-bottom: 30px;">
-                            <tr>
-                                <td style="padding: 15px;">
-                                    <p style="margin: 0; font-size: 14px; color: #92400e;">
-                                        <strong>⏰ Atenção:</strong> Confirme sua reserva em até <strong>30 minutos</strong> ou ela será cancelada automaticamente.
-                                    </p>
-                                </td>
-                            </tr>
-                        </table>
-
-                        <p style="font-size: 16px; color: #333333; margin: 0 0 20px 0;">
-                            Por favor, confirme sua reserva clicando no botão abaixo:
-                        </p>
-
-                        <!-- Buttons -->
-                        <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom: 30px;">
-                            <tr>
-                                <td align="center" style="padding: 20px 0;">
-                                    <table cellpadding="0" cellspacing="0">
-                                        <tr>
-                                            <td style="padding: 0 10px;">
-                                                <a href="{{ $confirmUrl }}" style="display: inline-block; padding: 15px 40px; background-color: #10b981; color: #ffffff; text-decoration: none; border-radius: 6px; font-weight: bold; font-size: 16px;">
-                                                    ✅ Confirmar
-                                                </a>
-                                            </td>
-                                            <td style="padding: 0 10px;">
-                                                <a href="{{ $cancelUrl }}" style="display: inline-block; padding: 15px 40px; background-color: #ef4444; color: #ffffff; text-decoration: none; border-radius: 6px; font-weight: bold; font-size: 16px;">
-                                                    ❌ Cancelar
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    </table>
                                 </td>
                             </tr>
                         </table>
