@@ -3,6 +3,9 @@
 namespace App\Services;
 
 use App\Exceptions\CreateReservationException;
+use App\Exceptions\ExpiredTokenException;
+use App\Exceptions\InvalidTokenException;
+use App\Exceptions\ReservationConfirmationException;
 use App\Exceptions\ReservationConflictException;
 use App\Exceptions\RestaurantClosedException;
 use App\Models\BusinessHour;
@@ -71,5 +74,26 @@ class ReservationService
                 $e
             );
         }
+    }
+
+    public function confirmByToken(string $token): void
+    {
+        $reservation = Reservation::where('confirmation_token', $token)
+            ->where('status', 'pending')
+            ->first();
+
+        if (!$reservation) {
+            throw new InvalidTokenException('Invalid reservation token');
+        }
+
+        if ($reservation->confirmation_expires_at && $reservation->confirmation_expires_at < now()) {
+            $reservation->update(['status' => 'cancelled']);
+            throw new ExpiredTokenException('Reservation token expired');
+        }
+
+        $reservation->update([
+            'status' => 'confirmed',
+            'confirmed_at' => now(),
+        ]);
     }
 }

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\CreateReservationException;
+use App\Exceptions\ExpiredTokenException;
+use App\Exceptions\InvalidTokenException;
 use App\Exceptions\ReservationConflictException;
 use App\Exceptions\RestaurantClosedException;
 use App\Http\Controllers\Controller;
@@ -54,5 +56,28 @@ class ReservationController extends Controller
             ->findOrFail($reservation->id);
 
         return new ReservationResource($reservation);
+    }
+
+    public function confirm(string $token, ReservationService $reservationService)
+    {
+        try {
+            $reservationService->confirmByToken($token);
+
+            return response()->json([
+                'message' => 'Reservation confirmed'
+            ]);
+        } catch (InvalidTokenException $e) {
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 404);
+        } catch (ExpiredTokenException) {
+            return response()->json([
+                'message' => 'Token has expired'
+            ], 410);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
 }
