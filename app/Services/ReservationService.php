@@ -103,4 +103,26 @@ class ReservationService
             'table'
         ])->first();
     }
+
+    public function cancelByToken(string $token, array $data): void
+    {
+        $reservation = Reservation::where('confirmation_token', $token)
+            ->whereIn('status', ['pending', 'confirmed'])
+            ->first();
+
+        if (!$reservation) {
+            throw new InvalidTokenException('Invalid reservation token');
+        }
+
+        if ($reservation->confirmation_expires_at && $reservation->confirmation_expires_at < now()) {
+            $reservation->update(['status' => 'cancelled']);
+            throw new ExpiredTokenException('Reservation token expired');
+        }
+
+        $reservation->update([
+            'status' => 'cancelled',
+            'cancellation_reason' => $data['reason'],
+            'cancelled_at' => now(),
+        ]);
+    }
 }

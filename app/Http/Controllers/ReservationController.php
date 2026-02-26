@@ -8,6 +8,7 @@ use App\Exceptions\InvalidTokenException;
 use App\Exceptions\ReservationConflictException;
 use App\Exceptions\RestaurantClosedException;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CancelReservationRequest;
 use App\Http\Requests\StoreReservationRequest;
 use App\Http\Resources\ReservationResource;
 use App\Mail\ReservationConfirmationMail;
@@ -76,7 +77,30 @@ class ReservationController extends Controller
             ], 410);
         } catch (Exception $e) {
             return response()->json([
+                'message' => 'Error confirming reservation'
+            ], 500);
+        }
+    }
+
+    public function cancel(CancelReservationRequest $request, string $token, ReservationService $reservationService)
+    {
+        try {
+            $reservationService->cancelByToken($token, $request->validated());
+
+            return response()->json([
+                'message' => 'Reservation cancelled'
+            ]);
+        } catch (InvalidTokenException $e) {
+            return response()->json([
                 'message' => $e->getMessage()
+            ], 404);
+        } catch (ExpiredTokenException) {
+            return response()->json([
+                'message' => 'Token has expired'
+            ], 410);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => 'Error cancelling reservation'
             ], 500);
         }
     }
