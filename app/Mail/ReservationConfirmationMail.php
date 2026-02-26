@@ -23,9 +23,7 @@ class ReservationConfirmationMail extends Mailable
         public string $endHour,
         public string $restaurant,
         public int $table,
-        public int $guests,
-        public string $confirmUrl,
-        public string $cancelUrl,
+        public int $guests
     )
     {}
 

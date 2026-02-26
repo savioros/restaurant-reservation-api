@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ReservationConfirmed;
 use App\Exceptions\CreateReservationException;
 use App\Exceptions\ExpiredTokenException;
 use App\Exceptions\InvalidTokenException;
@@ -11,12 +12,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CancelReservationRequest;
 use App\Http\Requests\StoreReservationRequest;
 use App\Http\Resources\ReservationResource;
-use App\Mail\ReservationConfirmationMail;
 use App\Models\Reservation;
 use App\Models\Restaurant;
 use App\Services\ReservationService;
 use Exception;
-use Illuminate\Support\Facades\Mail;
 
 class ReservationController extends Controller
 {
@@ -50,7 +49,7 @@ class ReservationController extends Controller
         try {
             $reservation = $reservationService->confirmByToken($token);
 
-            $mail = new ReservationConfirmationMail(
+            ReservationConfirmed::dispatch(
                 $reservation->customer_name,
                 $reservation->reservation_date,
                 $reservation->start_time,
@@ -58,11 +57,8 @@ class ReservationController extends Controller
                 $reservation->restaurant()->first()->name,
                 $reservation->table()->first()->number,
                 $reservation->guests_count,
-                '/',
-                '/'
+                $reservation->customer_email
             );
-
-            Mail::to($reservation->customer_email)->send($mail);
 
             return response()->json([
                 'message' => 'Reservation confirmed'
