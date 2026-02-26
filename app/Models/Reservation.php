@@ -20,6 +20,8 @@ class Reservation extends Model
         'confirmed_at',
         'cancelled_at',
         'completed_at',
+        'confirmation_token',
+        'confirmation_expires_at',
     ];
 
     protected $casts = [

@@ -20,7 +20,9 @@ class ReservationResource extends JsonResource
             'start_time' => $this->start_time,
             'end_time' => $this->end_time,
             'guests_count' => $this->guests_count,
-            'status' => $this->status?->value
+            'status' => $this->status?->value,
+            'confirmation_token' => $this->confirmation_token,
+            'confirmation_expires_at' => $this->confirmation_expires_at,
         ];
     }
 }
