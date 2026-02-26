@@ -101,7 +101,7 @@ class ReservationService
         return $reservation->load([
             'restaurant',
             'table'
-        ])->first();
+        ]);
     }
 
     public function cancelByToken(string $token, array $data): void
