@@ -8,10 +8,12 @@ use App\Exceptions\RestaurantClosedException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreReservationRequest;
 use App\Http\Resources\ReservationResource;
+use App\Mail\ReservationCreateMail;
 use App\Models\Reservation;
 use App\Models\Restaurant;
 use App\Services\ReservationService;
 use Exception;
+use Illuminate\Support\Facades\Mail;
 
 class ReservationController extends Controller
 {
@@ -19,6 +21,21 @@ class ReservationController extends Controller
     {
         try {
             $reservation = $reservationService->create($restaurant, $request->validated());
+
+            $mail = new ReservationCreateMail(
+                $request->customer_name,
+                $reservation->reservation_date,
+                $reservation->start_time,
+                $reservation->end_time,
+                $restaurant->name,
+                1,
+                $reservation->guests_count,
+                '/',
+                '/'
+            );
+
+            Mail::to($request->customer_email)->send($mail);
+
             return new ReservationResource($reservation);
         } catch (CreateReservationException $e) {
             return response()->json([

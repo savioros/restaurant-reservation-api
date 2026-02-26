@@ -19,9 +19,13 @@ class ReservationCreateMail extends Mailable
     public function __construct(
         public string $name,
         public string $date,
-        public string $hour,
+        public string $initHour,
+        public string $endHour,
         public string $restaurant,
-        public string $url,
+        public int $table,
+        public int $guests,
+        public string $confirmUrl,
+        public string $cancelUrl,
     )
     {}
 
@@ -41,7 +45,7 @@ class ReservationCreateMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'mail.create-reservation',
+            view: 'mail.create-reservation',
         );
     }
 
