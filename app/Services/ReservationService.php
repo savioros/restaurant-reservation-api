@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Exceptions\CreateReservationException;
+use App\Exceptions\ExpiredTokenException;
+use App\Exceptions\InvalidTokenException;
 use App\Exceptions\ReservationConflictException;
 use App\Exceptions\RestaurantClosedException;
 use App\Models\BusinessHour;
@@ -11,6 +13,7 @@ use App\Models\Restaurant;
 use Illuminate\Database\QueryException;
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Support\Str;
 
 class ReservationService
 {
@@ -60,6 +63,11 @@ class ReservationService
                 'end_time' => $data['end_time'],
                 'guests_count' => $data['guests_count'],
                 'status' => 'pending',
+                'confirmation_token' => Str::random(32),
+                'confirmation_expires_at' => now()->addMinutes(30),
+                'customer_name' => $data['customer_name'],
+                'customer_email' => $data['customer_email'],
+                'customer_phone' => $data['customer_phone'],
             ]);
         } catch (QueryException $e) {
             throw new CreateReservationException(
@@ -68,5 +76,53 @@ class ReservationService
                 $e
             );
         }
+    }
+
+    public function confirmByToken(string $token): Reservation
+    {
+        $reservation = Reservation::where('confirmation_token', $token)
+            ->where('status', 'pending')
+            ->first();
+
+        if (!$reservation) {
+            throw new InvalidTokenException('Invalid reservation token');
+        }
+
+        if ($reservation->confirmation_expires_at && $reservation->confirmation_expires_at < now()) {
+            $reservation->update(['status' => 'cancelled']);
+            throw new ExpiredTokenException('Reservation token expired');
+        }
+
+        $reservation->update([
+            'status' => 'confirmed',
+            'confirmed_at' => now(),
+        ]);
+
+        return $reservation->load([
+            'restaurant',
+            'table'
+        ])->first();
+    }
+
+    public function cancelByToken(string $token, array $data): void
+    {
+        $reservation = Reservation::where('confirmation_token', $token)
+            ->whereIn('status', ['pending', 'confirmed'])
+            ->first();
+
+        if (!$reservation) {
+            throw new InvalidTokenException('Invalid reservation token');
+        }
+
+        if ($reservation->confirmation_expires_at && $reservation->confirmation_expires_at < now()) {
+            $reservation->update(['status' => 'cancelled']);
+            throw new ExpiredTokenException('Reservation token expired');
+        }
+
+        $reservation->update([
+            'status' => 'cancelled',
+            'cancellation_reason' => $data['reason'],
+            'cancelled_at' => now(),
+        ]);
     }
 }
