@@ -8,6 +8,7 @@ use App\Models\Restaurant;
 use App\Models\Table;
 use App\Repositories\TableRepository;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Collection;
 
 class TableService
 {

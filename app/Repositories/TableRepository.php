@@ -2,7 +2,9 @@
 
 namespace App\Repositories;
 
+use App\Models\Restaurant;
 use App\Models\Table;
+use Illuminate\Support\Collection;
 
 class TableRepository
 {
