@@ -10,6 +10,7 @@ use App\Exceptions\RestaurantClosedException;
 use App\Models\BusinessHour;
 use App\Models\Reservation;
 use App\Models\Restaurant;
+use App\Repositories\BusinessHourRepository;
 use App\Repositories\ReservationRepository;
 use Illuminate\Database\QueryException;
 use Carbon\Carbon;
@@ -18,6 +19,12 @@ use Illuminate\Support\Str;
 
 class ReservationService
 {
+    public function __construct(
+        private ReservationRepository $reservationRepository,
+        private BusinessHourRepository $businessHourRepository
+    )
+    {}
+
     public function create(Restaurant $restaurant, array $data): Reservation
     {
         $date = Carbon::parse($data['reservation_date']);
@@ -26,9 +33,7 @@ class ReservationService
             throw new Exception('You cannot book on past dates.');
         }
 
-        $businessHour = BusinessHour::where('restaurant_id', $restaurant->id)
-            ->where('day_of_week', $date->dayOfWeek)
-            ->first();
+        $businessHour = $this->businessHourRepository->findByDayOfWeek($restaurant->id, $date->dayOfWeek);
 
         if (!$businessHour || $businessHour->is_closed) {
             throw new RestaurantClosedException('Restaurant closed on this day');
@@ -43,12 +48,12 @@ class ReservationService
             throw new Exception('Outside of business hours');
         }
 
-        if (ReservationRepository::hasConflict($restaurant->id, $data)) {
+        if ($this->reservationRepository->hasConflict($restaurant->id, $data)) {
             throw new ReservationConflictException('Table already reserved at this time.');
         }
 
         try {
-            return ReservationRepository::create($restaurant->id, $data);
+            return $this->reservationRepository->create($restaurant->id, $data);
         } catch (QueryException $e) {
             throw new CreateReservationException(
                 'Error creating table',
@@ -60,7 +65,7 @@ class ReservationService
 
     public function confirmByToken(string $token): Reservation
     {
-        $reservation = ReservationRepository::findByToken($token, ['pending']);
+        $reservation = $this->reservationRepository->findByToken($token, ['pending']);
 
         $this->ensureReservationExists($reservation);
 
@@ -76,7 +81,7 @@ class ReservationService
 
     public function cancelByToken(string $token, array $data): void
     {
-        $reservation = ReservationRepository::findByToken($token, ['pending', 'confirmed']);
+        $reservation = $this->reservationRepository->findByToken($token, ['pending', 'confirmed']);
 
         $this->ensureReservationExists($reservation);
 
