@@ -8,14 +8,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreTableRequest;
 use App\Http\Resources\TableResource;
 use App\Models\Restaurant;
-use App\Models\Table;
 use App\Services\TableService;
 
 class TableController extends Controller
 {
-    public function index(Restaurant $restaurant)
+    public function index(Restaurant $restaurant, TableService $service)
     {
-        $tables = Table::where('restaurant_id', $restaurant->id)->get();
+        $tables = $service->getByRestaurant($restaurant);
         return TableResource::collection($tables);
     }
 
