@@ -46,12 +46,20 @@ class Reservation extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function cancel(): void
+    public function cancel(?string $reason = null): void
     {
         $this->update([
             'status' => ReservationStatus::CANCELLED->value,
-            'cancellation_reason' => 'The customer did not confirm in time',
+            'cancellation_reason' => $reason ?? 'The customer did not confirm in time',
             'cancelled_at' => now(),
+        ]);
+    }
+
+    public function confirm(): void
+    {
+        $this->update([
+            'status' => 'confirmed',
+            'confirmed_at' => now(),
         ]);
     }
 }
