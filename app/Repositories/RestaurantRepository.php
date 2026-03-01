@@ -22,6 +22,12 @@ class RestaurantRepository
         ]);
     }
 
+    public function update(Restaurant $restaurant, array $data): Restaurant
+    {
+        $restaurant->update($data);
+        return $restaurant;
+    }
+
     public function userHasRestaurant(int $userId): bool
     {
         return Restaurant::where('user_id', $userId)->exists();

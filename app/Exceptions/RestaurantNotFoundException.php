@@ -4,7 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 
-class UserAlreadyHasARestaurant extends Exception
+class RestaurantNotFoundException extends Exception
 {
     //
 }

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\CreateTableException;
-use App\Exceptions\UserAreProhibitedCreateOrModifyingThirdpartyRestaurant;
+use App\Exceptions\UserAreProhibitedCreateOrModifyingThirdpartyRestaurantException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreTableRequest;
 use App\Http\Resources\TableResource;
@@ -27,7 +27,7 @@ class TableController extends Controller
             return response()->json([
                 'message' => $e->getMessage()
             ], 500);
-        } catch (UserAreProhibitedCreateOrModifyingThirdpartyRestaurant $e) {
+        } catch (UserAreProhibitedCreateOrModifyingThirdpartyRestaurantException $e) {
             return response()->json([
                 'message' => $e->getMessage()
             ], 403);
