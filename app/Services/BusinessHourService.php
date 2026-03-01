@@ -18,16 +18,12 @@ class BusinessHourService
 
     public function create(int $userId, Restaurant $restaurant, array $data): BusinessHour
     {
-        if ($userId != $restaurant->user_id) throw new UserAreProhibitedCreateOrModifyingThirdpartyRestaurantException('You do not have permission to create or modify this restaurant\'s information');
+        if ($userId != $restaurant->user_id) throw new UserAreProhibitedCreateOrModifyingThirdpartyRestaurantException();
 
         try {
             return $this->businessHourRepository->create($restaurant->id, $data);
         } catch (QueryException $e) {
-            throw new CreateBusinessHourException(
-                'Error creating table',
-                0,
-                $e
-            );
+            throw new CreateBusinessHourException();
         }
     }
 }
