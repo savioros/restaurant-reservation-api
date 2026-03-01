@@ -15,29 +15,17 @@ class UserController extends Controller
 {
     public function store(StoreUserRequest $request, RegisterAction $registerAction)
     {
-        try {
-            $user = $registerAction->handle($request->validated());
-            return new UserResource($user);
-        } catch (CreateUserException $e) {
-            return response()->json([
-                'message' => $e->getMessage()
-            ]);
-        }
+        $user = $registerAction->handle($request->validated());
+        return new UserResource($user);
     }
 
     public function login(LoginRequest $request, LoginAction $loginAction)
     {
-        try{
-            $token = $loginAction->handle($request->validated());
-    
-            return response()->json([
-                'token' => $token,
-                'type' => 'bearer'
-            ]);
-        } catch (Exception $e) {
-            return response()->json([
-                'message' => $e->getMessage()
-            ]);
-        }
+        $token = $loginAction->handle($request->validated());
+
+        return response()->json([
+            'token' => $token,
+            'type' => 'bearer'
+        ]);
     }
 }
