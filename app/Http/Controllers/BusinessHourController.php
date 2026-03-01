@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\CreateBusinessHourException;
-use App\Exceptions\UserAreProhibitedCreateOrModifyingThirdpartyRestaurant;
+use App\Exceptions\UserAreProhibitedCreateOrModifyingThirdpartyRestaurantException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreBusinessHourRequest;
 use App\Http\Resources\BusinessHourResource;
@@ -21,7 +21,7 @@ class BusinessHourController extends Controller
             return response()->json([
                 'message' => $e->getMessage()
             ], 500);
-        } catch (UserAreProhibitedCreateOrModifyingThirdpartyRestaurant $e) {
+        } catch (UserAreProhibitedCreateOrModifyingThirdpartyRestaurantException $e) {
             return response()->json([
                 'message' => $e->getMessage()
             ], 403);

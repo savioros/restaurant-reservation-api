@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Exceptions\CreateBusinessHourException;
-use App\Exceptions\UserAreProhibitedCreateOrModifyingThirdpartyRestaurant;
+use App\Exceptions\UserAreProhibitedCreateOrModifyingThirdpartyRestaurantException;
 use App\Models\BusinessHour;
 use App\Models\Restaurant;
 use App\Repositories\BusinessHourRepository;
@@ -18,7 +18,7 @@ class BusinessHourService
 
     public function create(int $userId, Restaurant $restaurant, array $data): BusinessHour
     {
-        if ($userId != $restaurant->user_id) throw new UserAreProhibitedCreateOrModifyingThirdpartyRestaurant('You do not have permission to create or modify this restaurant\'s information');
+        if ($userId != $restaurant->user_id) throw new UserAreProhibitedCreateOrModifyingThirdpartyRestaurantException('You do not have permission to create or modify this restaurant\'s information');
 
         try {
             return $this->businessHourRepository->create($restaurant->id, $data);

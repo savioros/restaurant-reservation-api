@@ -16,14 +16,18 @@ Route::post('/auth/login', [UserController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/restaurants', [RestaurantController::class, 'store']);
+    Route::get('/restaurants', [RestaurantController::class, 'index']);
+    Route::get('/restaurants/{restaurant}', [RestaurantController::class, 'show']);
+    Route::patch('/restaurants/{restaurant}', [RestaurantController::class, 'update']);
+
     Route::post('/restaurants/{restaurant}/tables', [TableController::class, 'store']);
+    Route::get('/restaurants/{restaurant}/tables', [TableController::class, 'index']);
+
     Route::post('/restaurants/{restaurant}/business-hours', [BusinessHourController::class, 'store']);
 });
 
-Route::get('/restaurants', [RestaurantController::class, 'index']);
-Route::get('/restaurants/{restaurant}', [RestaurantController::class, 'show']);
-Route::get('/restaurants/{restaurant}/tables', [TableController::class, 'index']);
 Route::post('/restaurants/{restaurant}/reservations', [ReservationController::class, 'store']);
 Route::get('/restaurants/{restaurant}/reservations/{reservation}', [ReservationController::class, 'show']);
+
 Route::get('/reservations/confirm/{token}', [ReservationController::class, 'confirm']);
 Route::post('/reservations/cancel/{token}', [ReservationController::class, 'cancel']);
