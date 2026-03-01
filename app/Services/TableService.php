@@ -19,16 +19,12 @@ class TableService
 
     public function create(int $userId, Restaurant $restaurant, array $data): Table
     {
-        if ($userId != $restaurant->user_id) throw new UserAreProhibitedCreateOrModifyingThirdpartyRestaurantException('You do not have permission to create or modify this restaurant\'s information');
+        if ($userId != $restaurant->user_id) throw new UserAreProhibitedCreateOrModifyingThirdpartyRestaurantException();
 
         try {
             return $this->tableRepository->create($restaurant->id, $data);
         } catch (QueryException $e) {
-            throw new CreateTableException(
-                'Error creating table',
-                0,
-                $e
-            );
+            throw new CreateTableException();
         }
     }
 

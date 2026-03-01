@@ -14,17 +14,7 @@ class BusinessHourController extends Controller
 {
     public function store(StoreBusinessHourRequest $request, Restaurant $restaurant, BusinessHourService $businessHourService)
     {
-        try {
-            $businessHour = $businessHourService->create(auth()->id(), $restaurant, $request->validated());
-            return new BusinessHourResource($businessHour);
-        } catch (CreateBusinessHourException $e) {
-            return response()->json([
-                'message' => $e->getMessage()
-            ], 500);
-        } catch (UserAreProhibitedCreateOrModifyingThirdpartyRestaurantException $e) {
-            return response()->json([
-                'message' => $e->getMessage()
-            ], 403);
-        }
+        $businessHour = $businessHourService->create(auth()->id(), $restaurant, $request->validated());
+        return new BusinessHourResource($businessHour);
     }
 }

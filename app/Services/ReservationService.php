@@ -29,37 +29,25 @@ class ReservationService
     {
         $date = Carbon::parse($data['reservation_date']);
 
-        if ($date->isPast() && !$date->isToday()) {
-            throw new Exception('You cannot book on past dates.');
-        }
+        if ($date->isPast() && !$date->isToday()) throw new Exception('You cannot book on past dates.');
 
         $businessHour = $this->businessHourRepository->findByDayOfWeek($restaurant->id, $date->dayOfWeek);
 
-        if (!$businessHour || $businessHour->is_closed) {
-            throw new RestaurantClosedException('Restaurant closed on this day');
-        }
+        if (!$businessHour || $businessHour->is_closed) throw new RestaurantClosedException();
 
         $startReservation = Carbon::parse($data['start_time']);
         $endReservation = Carbon::parse($data['end_time']);
         $openTimeRestaurant  = Carbon::parse($businessHour->open_time);
         $closeTimeRestaurant = Carbon::parse($businessHour->close_time);
 
-        if ($startReservation->lt($openTimeRestaurant) || $endReservation->gte($closeTimeRestaurant)) {
-            throw new Exception('Outside of business hours');
-        }
+        if ($startReservation->lt($openTimeRestaurant) || $endReservation->gte($closeTimeRestaurant)) throw new Exception('Outside of business hours');
 
-        if ($this->reservationRepository->hasConflict($restaurant->id, $data)) {
-            throw new ReservationConflictException('Table already reserved at this time.');
-        }
+        if ($this->reservationRepository->hasConflict($restaurant->id, $data)) throw new ReservationConflictException();
 
         try {
             return $this->reservationRepository->create($restaurant->id, $data);
         } catch (QueryException $e) {
-            throw new CreateReservationException(
-                'Error creating table',
-                0,
-                $e
-            );
+            throw new CreateReservationException();
         }
     }
 
@@ -92,16 +80,14 @@ class ReservationService
 
     private function ensureReservationExists(?Reservation $reservation): void
     {
-        if (!$reservation) {
-            throw new InvalidTokenException('Invalid reservation token');
-        }
+        if (!$reservation) throw new InvalidTokenException();
     }
 
     private function ensureReservationNotExpired(Reservation $reservation): void
     {
         if ($reservation->confirmation_expires_at && $reservation->confirmation_expires_at < now()) {
             $reservation->cancel();
-            throw new ExpiredTokenException('Reservation token expired');
+            throw new ExpiredTokenException();
         }
     }
 }
