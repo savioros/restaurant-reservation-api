@@ -20,11 +20,7 @@ class RegisterAction
                 'role' => $data['role']
             ]);
         } catch (QueryException $e) {
-            throw new CreateUserException(
-                "Error creating user",
-                0,
-                $e
-            );
+            throw new CreateUserException();
         }
     }
 }
