@@ -3,7 +3,10 @@
 namespace App\Services;
 
 use App\Exceptions\CreateRestaurantException;
-use App\Exceptions\UserAlreadyHasARestaurant;
+use App\Exceptions\RestaurantDoesNotBelongToUserException;
+use App\Exceptions\RestaurantNotFoundException;
+use App\Exceptions\UpdateRestaurantException;
+use App\Exceptions\UserAlreadyHasARestaurantException;
 use App\Models\Restaurant;
 use App\Repositories\RestaurantRepository;
 use Illuminate\Database\QueryException;
@@ -20,7 +23,7 @@ class RestaurantService
         $userHasRestaurant = $this->restaurantRepository->userHasRestaurant($userId);
 
         if ($userHasRestaurant) {
-            throw new UserAlreadyHasARestaurant('User already has a restaurant');
+            throw new UserAlreadyHasARestaurantException('User already has a restaurant');
         }
 
         try {
@@ -31,6 +34,17 @@ class RestaurantService
                 0,
                 $e
             );
+        }
+    }
+
+    public function update(int $userId, Restaurant $restaurant, array $data): Restaurant
+    {
+        if ($restaurant->user_id !== $userId) throw new RestaurantDoesNotBelongToUserException();
+
+        try {
+            return $this->restaurantRepository->update($restaurant, $data);
+        } catch (QueryException $e) {
+            throw new UpdateRestaurantException();
         }
     }
 }
